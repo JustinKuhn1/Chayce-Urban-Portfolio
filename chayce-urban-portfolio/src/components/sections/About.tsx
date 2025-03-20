@@ -18,8 +18,8 @@ export default function About() {
             viewport={{ once: true }}
           >
             <Avatar className="h-64 w-64 border-4 border-background shadow-xl transition-all duration-500 hover:scale-105">
-              <AvatarImage src="@/chayce-urban-portfolio\src\app\Screenshot 2025-03-19 213509.png" alt="Chayce Urban" />
-              <AvatarFallback className="text-4xl">CU</AvatarFallback>
+              <AvatarImage src="@\app\Screenshot 2025-03-19 213509.png" alt="Chayce Urban" />
+              <AvatarFallback className="text-4xl"></AvatarFallback>
             </Avatar>
           </motion.div>
 
