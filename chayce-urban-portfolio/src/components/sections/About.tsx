@@ -18,7 +18,7 @@ export default function About() {
             viewport={{ once: true }}
           >
             <Avatar className="h-64 w-64 border-4 border-background shadow-xl transition-all duration-500 hover:scale-105">
-              <AvatarImage src="/images/profile.jpg" alt="Chayce Urban" />
+              <AvatarImage src="@/chayce-urban-portfolio\src\app\Screenshot 2025-03-19 213509.png" alt="Chayce Urban" />
               <AvatarFallback className="text-4xl">CU</AvatarFallback>
             </Avatar>
           </motion.div>
@@ -35,15 +35,15 @@ export default function About() {
             </h2>
 
             <p className="text-lg text-muted-foreground">
-              Hello! I'm Chayce Urban, just your average guy with some not-so-average qualities. Life's too short to take everything seriously, so I don't.
+            I’m a freakin’ disaster of a human, a total moron behind the wheel who drives like a brain-dead idiot, defying all common sense. 
             </p>
 
             <p className="text-lg text-muted-foreground">
-              When I'm not on the golf course perfecting my swing (or trying to), you might find me at the gym lifting weights or behind the wheel demonstrating my unique approach to driving that keeps everyone on their toes.
+            I’m a short little gremlin, too dumb to handle basic math—calculators cry when I touch ‘em.
             </p>
 
             <p className="text-lg text-muted-foreground">
-              I'm not ashamed to embrace all aspects of who I am - from my compact stature to my refreshingly uncomplicated approach to problem-solving. Some might call it low IQ; I call it cutting through the noise.
+            I'll steal ur girl, I bench 134lbs. Watch out. I waste my time swinging at golf balls like a clueless wannabe and grunting in the gym, pretending I’m fit.
             </p>
 
             <div className="pt-4">
