@@ -13,17 +13,17 @@ type Skill = {
 const skills: Skill[] = [
   {
     title: "Golfing",
-    description: "Passionate about golf and constantly working to improve my game on the course.",
+    description: "Passionate about golf and consistently hitting 70 on the front nine.",
     icon: <Goal className="h-12 w-12 text-primary" />,
   },
   {
     title: "Lifting",
-    description: "Dedicated to fitness and strength training with a regular gym routine.",
+    description: "2 years in- benching 134lbs and squatting 95lbs.",
     icon: <Dumbbell className="h-12 w-12 text-primary" />,
   },
   {
-    title: "Driving like a moron",
-    description: "Recognized for my unique approach to operating motor vehicles that defies conventional wisdom.",
+    title: "Driving like an moron",
+    description: "I drive a BMW so it's fine.",
     icon: <Car className="h-12 w-12 text-primary" />,
   },
   {
@@ -32,18 +32,18 @@ const skills: Skill[] = [
     icon: <ArrowDown className="h-12 w-12 text-primary" />,
   },
   {
-    title: "Low IQ",
-    description: "Approaching problems with a refreshingly uncomplicated mindset that cuts through unnecessary complexity.",
+    title: "Borderline Retarded",
+    description: "I will be attending CalU to drink on the daily.",
     icon: <Brain className="h-12 w-12 text-primary" />,
   },
   {
-    title: "Self righteous douchebag",
-    description: "Confidently maintaining my positions regardless of contradictory evidence or social cues.",
+    title: "Self Righteous Douchebag",
+    description: "'What color is your BMW?'",
     icon: <User className="h-12 w-12 text-primary" />,
   },
   {
-    title: "Terrible at math",
-    description: "Making calculators feel appreciated and necessary since day one.",
+    title: "Natural talent at math",
+    description: "6+2×3 = 24",
     icon: <Calculator className="h-12 w-12 text-primary" />,
   },
 ];

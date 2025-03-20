@@ -17,23 +17,23 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Golf Tournament",
-    description: "Participated in a local charity golf tournament where I demonstrated my unique approach to the game while raising money for a good cause.",
-    imageSrc: "/images/projects/project1.jpg",
-    tags: ["Golf", "Charity", "Sports"],
+    title: "Golf Range",
+    description: "Hooked the ball into someone's car.",
+    imageSrc: "/297E3CF7-53D0-4B43-918E-DCEF876AFF7C.jpeg",
+    tags: ["Golf", "Sports"],
     link: "#",
   },
   {
-    title: "Gym Challenge",
-    description: "Completed a 30-day lifting challenge at my local gym, surprising everyone with my dedication despite my compact stature.",
-    imageSrc: "/images/projects/project2.jpg",
+    title: "Gym PR Day",
+    description: "Succesfully hit 134lbs on the bench with the assistance of King Kuhn by my side. All hail King Kuhn",
+    imageSrc: "/maxresdefault.jpg",
     tags: ["Fitness", "Lifting", "Challenge"],
     link: "#",
   },
   {
-    title: "Road Trip",
-    description: "Embarked on an unforgettable cross-country road trip featuring my signature driving style that kept passengers on the edge of their seats.",
-    imageSrc: "/images/projects/project3.jpg",
+    title: "Driving",
+    description: "Suicide passed an innocent family at 90mph on a backroad.",
+    imageSrc: "/download.jpg",
     tags: ["Travel", "Driving", "Adventure"],
     link: "#",
   },
@@ -67,10 +67,10 @@ export default function Projects() {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            My Adventures
+            Notable Moments
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            A glimpse into some of my memorable experiences and adventures.
+            A glimpse into some of my memorable experiences.
           </p>
         </motion.div>
 
@@ -85,8 +85,14 @@ export default function Projects() {
             <motion.div key={index} variants={item}>
               <Card className="overflow-hidden flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-2 duration-300">
                 <div className="relative h-48 w-full overflow-hidden">
+                  <Image
+                    src={project.imageSrc}
+                    alt={project.title}
+                    layout="fill"
+                    objectFit="cover"
+                  />
                   <div className="absolute inset-0 bg-primary/10 flex items-center justify-center group">
-                    <Camera className="h-12 w-12 text-primary/50 transition-transform duration-300 group-hover:scale-110" />
+                    
                   </div>
                 </div>
                 <CardHeader>

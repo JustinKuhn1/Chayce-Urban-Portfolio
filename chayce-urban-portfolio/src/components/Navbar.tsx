@@ -110,11 +110,6 @@ export default function Navbar() {
           </SheetTrigger>
           <SheetContent side="right" className="w-[80%] max-w-sm">
             <div className="flex flex-col h-full">
-              <div className="flex justify-end mb-8">
-                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
               <nav className="flex flex-col gap-6">
                 {navLinks.map((link, index) => (
                   <motion.div

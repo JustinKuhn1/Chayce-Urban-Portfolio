@@ -8,11 +8,8 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { icon: <Instagram className="h-5 w-5" />, href: "https://instagram.com/", label: "Instagram" },
-    { icon: <Twitter className="h-5 w-5" />, href: "https://twitter.com/", label: "Twitter" },
-    { icon: <Github className="h-5 w-5" />, href: "https://github.com/", label: "GitHub" },
-    { icon: <Linkedin className="h-5 w-5" />, href: "https://linkedin.com/in/", label: "LinkedIn" },
-    { icon: <Mail className="h-5 w-5" />, href: "mailto:chayce@example.com", label: "Email" },
+    { icon: <Instagram className="h-5 w-5" />, href: "https://www.instagram.com/cmurban_06?igsh=MWtocTN6dTJ5aGVscA==", label: "Instagram" },
+    { icon: <Mail className="h-5 w-5" />, href: "mailto:kuhnj8313@gmail.com", label: "Email" },
   ];
 
   return (
@@ -66,7 +63,7 @@ export default function Footer() {
           transition={{ duration: 0.7, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p>This is a personal portfolio. All qualities mentioned are 100% accurate.</p>
+          <p>Developed by Justin Kuhn with the help of Dylan Simmons.</p>
         </motion.div>
       </div>
     </footer>

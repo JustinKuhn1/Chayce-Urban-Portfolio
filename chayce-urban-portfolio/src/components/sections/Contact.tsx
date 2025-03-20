@@ -51,7 +51,7 @@ export default function Contact() {
             Hit Me Up
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Want to chat about golf, lifting, or my exceptional driving skills? Drop me a line!
+            I'm lonely text me. Only white people
           </p>
         </motion.div>
 
@@ -71,7 +71,7 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  <a href="mailto:contact@example.com" className="hover:text-foreground transition-colors">
+                  <a href="mailto:kuhnj8313@gmail.com" className="hover:text-foreground transition-colors">
                     chayce@example.com
                   </a>
                 </CardDescription>
@@ -86,8 +86,8 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  <a href="tel:+11234567890" className="hover:text-foreground transition-colors">
-                    +1 (123) 456-7890
+                  <a href="tel:+14124179002" className="hover:text-foreground transition-colors">
+                    +1 (412) 699-8128
                   </a>
                 </CardDescription>
               </CardContent>
@@ -101,7 +101,7 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  San Francisco, California, USA
+                  Plum, PA, USA
                 </CardDescription>
               </CardContent>
             </Card>
@@ -120,7 +120,7 @@ export default function Contact() {
                   <MessageSquare className="h-5 w-5 text-primary" /> Send a Message
                 </CardTitle>
                 <CardDescription>
-                  Drop me a line if you want to hang out or discuss my unique qualities.
+                   
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -196,7 +196,7 @@ export default function Contact() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      Thanks for reaching out! I'll get back to you when I'm done golfing.
+                      Message sent. I'll get back to you when I'm done golfing.
                     </motion.p>
                   )}
                 </form>

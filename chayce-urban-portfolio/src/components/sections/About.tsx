@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Collage from "@/components/sections/Collage";
 
 export default function About() {
   return (
@@ -18,7 +19,7 @@ export default function About() {
             viewport={{ once: true }}
           >
             <Avatar className="h-64 w-64 border-4 border-background shadow-xl transition-all duration-500 hover:scale-105">
-              <AvatarImage src="@\app\Screenshot 2025-03-19 213509.png" alt="Chayce Urban" />
+              <AvatarImage src="/Screenshot 2025-03-19 213509.png" alt="Chayce Urban" />
               <AvatarFallback className="text-4xl"></AvatarFallback>
             </Avatar>
           </motion.div>
@@ -35,15 +36,11 @@ export default function About() {
             </h2>
 
             <p className="text-lg text-muted-foreground">
-            I’m a freakin’ disaster of a human, a total moron behind the wheel who drives like a brain-dead idiot, defying all common sense. 
+              I’m a short little gremlin.
             </p>
 
             <p className="text-lg text-muted-foreground">
-            I’m a short little gremlin, too dumb to handle basic math—calculators cry when I touch ‘em.
-            </p>
-
-            <p className="text-lg text-muted-foreground">
-            I'll steal ur girl, I bench 134lbs. Watch out. I waste my time swinging at golf balls like a clueless wannabe and grunting in the gym, pretending I’m fit.
+              I'll steal ur girl, I bench 134lbs. I waste my time swinging at golf balls like a clueless wannabe and grunting in the gym, pretending I’m fit.
             </p>
 
             <div className="pt-4">
@@ -52,6 +49,10 @@ export default function About() {
               </Button>
             </div>
           </motion.div>
+        </div>
+
+        <div className="mt-12">
+          <Collage />
         </div>
       </div>
     </section>
