@@ -25,6 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+      <meta name="theme-color" content="#000000" /> {/* Add the theme-color meta tag here */}
+      </head>
       <ClientBody>
         {children}
       </ClientBody>
