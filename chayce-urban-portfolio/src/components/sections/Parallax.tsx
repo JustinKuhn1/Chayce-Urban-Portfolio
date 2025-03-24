@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useMemo } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface ParallaxImagesProps {
   images: string[];
   className?: string;
-  speed?: number; // 0 to 1, where 1 is full parallax effect
+  speed?: number;
 }
 
 const ParallaxImages = ({ images, className = '', speed = 0.5 }: ParallaxImagesProps) => {
@@ -17,37 +17,21 @@ const ParallaxImages = ({ images, className = '', speed = 0.5 }: ParallaxImagesP
     offset: ['start end', 'end start'],
   });
 
-  // Precompute parallax values outside of the map function
-  const parallaxValues = useMemo(() => {
-    return images.map((_, index) => {
-      return {
-        yValue: useTransform(
-          scrollYProgress,
-          [0, 1],
-          [0, 100 * speed * (1 + index * 0.15)]
-        ),
-        scaleValue: useTransform(
-          scrollYProgress,
-          [0, 0.5, 1],
-          [1, 1 + index * 0.02, 1 - index * 0.05]
-        ),
-        opacityValue: useTransform(
-          scrollYProgress,
-          [0, 0.3, 0.6, 1],
-          [1, 0.8 - index * 0.1, 0.6 + index * 0.1, 0]
-        )
-      };
-    });
-  }, [scrollYProgress, speed]);
-
   return (
     <div ref={containerRef} className={`relative ${className}`}>
       {images.map((src, index) => {
+        // Static transform values based on index
+        const yTransform = [0, 100 * speed * (1 + index * 0.15)];
+        const scaleTransform = [1, 1 + index * 0.02, 1 - index * 0.05];
+        const opacityTransform = [1, 0.8 - index * 0.1, 0.6 + index * 0.1, 0];
+
+        const yValue = useTransform(scrollYProgress, [0, 1], yTransform);
+        const scaleValue = useTransform(scrollYProgress, [0, 0.5, 1], scaleTransform);
+        const opacityValue = useTransform(scrollYProgress, [0, 0.3, 0.6, 1], opacityTransform);
+
         // Position each image at a different place
         const leftPosition = 20 + (index % 3) * 30;
         const topPosition = 10 + (index % 2) * 40;
-
-        const { yValue, scaleValue, opacityValue } = parallaxValues[index];
 
         return (
           <motion.div
