@@ -75,7 +75,7 @@ export default function Skills() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-bold text-[#7692ad]">
             My Unique Qualities
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">

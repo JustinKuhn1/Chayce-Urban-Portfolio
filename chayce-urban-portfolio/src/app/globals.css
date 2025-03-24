@@ -67,3 +67,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+.hero-text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-blue-500 to-indigo-600;
+}

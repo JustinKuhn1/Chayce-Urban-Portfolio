@@ -1,23 +1,22 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { motion } from "framer-motion";
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const navLinks = [
-  { href: "#about", label: "About Me" },
-  { href: "#skills", label: "My Qualities" },
-  { href: "#projects", label: "Adventures" },
-  { href: "#contact", label: "Hit Me Up" },
+const navItems = [
+  { name: 'Home', href: '#home' },
+  { name: 'About', href: '#about' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar() {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Handle scroll effect for navbar
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -28,125 +27,96 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  const animateNavLinks = {
-    hidden: { opacity: 0, y: -5 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3 }
-    }
-  };
-
   return (
-    <motion.header
-      className={`sticky top-0 z-40 w-full bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${scrolled ? 'shadow-md py-2' : 'py-4'}`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
+    <header
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md py-2'
+          : 'bg-transparent py-4'
+      }`}
     >
-      <div className="container flex items-center justify-between">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link
-            href="/"
-            className="font-bold text-xl md:text-2xl tracking-tight hover:text-primary transition-colors duration-300"
-          >
-            Chayce Urban
-          </Link>
-        </motion.div>
-
-        {/* Desktop Navigation */}
-        <motion.nav
-          className="hidden md:flex gap-8 items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          {navLinks.map((link, index) => (
-            <motion.div
-              key={link.href}
-              variants={animateNavLinks}
-              initial="hidden"
-              animate="show"
-              transition={{ delay: index * 0.1 + 0.2 }}
-            >
-              <Link
-                href={link.href}
-                className="text-muted-foreground hover:text-foreground font-medium relative group overflow-hidden inline-block"
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </motion.div>
-          ))}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
           <motion.div
-            variants={animateNavLinks}
-            initial="hidden"
-            animate="show"
-            transition={{ delay: navLinks.length * 0.1 + 0.2 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center"
           >
-            <Button asChild variant="default" className="transition-transform hover:scale-105 duration-200">
-              <Link href="#contact">Get in Touch</Link>
-            </Button>
+            <a href="#" className="text-2xl font-bold text-gray">
+              Chayce Urban
+            </a>
           </motion.div>
-        </motion.nav>
 
-        {/* Mobile Navigation */}
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon" className="transition-transform active:scale-90 duration-200">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[80%] max-w-sm">
-            <div className="flex flex-col h-full">
-              <nav className="flex flex-col gap-6">
-                {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-lg font-medium hover:text-primary transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ))}
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navLinks.length * 0.1 }}
-                  className="mt-4"
-                >
-                  <Button asChild className="w-full transition-transform hover:scale-105 duration-200">
-                    <Link
-                      href="#contact"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Get in Touch
-                    </Link>
-                  </Button>
-                </motion.div>
-              </nav>
-            </div>
-          </SheetContent>
-        </Sheet>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex space-x-8">
+            {navItems.map((item, index) => (
+              <motion.a
+                key={item.name}
+                href={item.href}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="text-gray-700 hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400 font-medium transition-colors"
+              >
+                {item.name}
+              </motion.a>
+            ))}
+          </nav>
+
+          {/* Mobile menu button */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="md:hidden flex items-center"
+          >
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
+            >
+              {isOpen ? (
+                <XMarkIcon className="h-6 w-6" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" />
+              )}
+            </button>
+          </motion.div>
+        </div>
       </div>
-    </motion.header>
+
+      {/* Mobile Navigation */}
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{
+          height: isOpen ? 'auto' : 0,
+          opacity: isOpen ? 1 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+        className="md:hidden overflow-hidden"
+      >
+        <div className="px-4 py-3 space-y-2 bg-white dark:bg-gray-900 shadow-lg">
+          {navItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              onClick={() => setIsOpen(false)}
+              className="block py-2 px-3 text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:text-blue-400 dark:hover:bg-gray-800 rounded-md font-medium transition-colors"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+      </motion.div>
+    </header>
   );
-}
+};
+
+export default Navbar;

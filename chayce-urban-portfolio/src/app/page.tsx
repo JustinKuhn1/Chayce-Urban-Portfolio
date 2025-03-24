@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
+import ScrollAnimatedProjects from "@/components/sections/ScrollAnimatedProjects";
 import Skills from "@/components/sections/Skills";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
+import MouseTrailEffect from '@/components/sections/MouseTrailEffects';
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        <Projects />
+        <ScrollAnimatedProjects />
         <Skills />
         <Contact />
       </main>
