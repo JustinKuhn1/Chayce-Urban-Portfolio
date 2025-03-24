@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
 interface ParallaxImagesProps {
@@ -13,7 +13,7 @@ interface ParallaxImagesProps {
 interface ParallaxImageItemProps {
   src: string;
   index: number;
-  scrollYProgress: any; // MotionValue<number>
+  scrollYProgress: MotionValue<number>;
   speed: number;
   totalImages: number;
 }
@@ -77,7 +77,11 @@ const ParallaxImageItem = ({
   );
 };
 
-const ParallaxImages = ({ images, className = "", speed = 0.5 }: ParallaxImagesProps) => {
+const ParallaxImages = ({
+  images,
+  className = "",
+  speed = 0.5,
+}: ParallaxImagesProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
