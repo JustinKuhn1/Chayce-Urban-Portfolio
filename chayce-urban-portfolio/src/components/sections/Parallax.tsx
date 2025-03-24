@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image"; // Import Next.js Image component
 
@@ -13,20 +13,22 @@ interface ParallaxImagesProps {
 const ParallaxImages = ({ images, className = "", speed = 0.5 }: ParallaxImagesProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll progress tracking (hook at the top level)
+  // Scroll tracking (this is fine)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  
-  const transforms = useMemo(() => {
-    return images.map((_, index) => ({
-      yValue: useTransform(scrollYProgress, [0, 1], [0, 100 * speed * (1 + index * 0.15)]),
-      scaleValue: useTransform(scrollYProgress, [0, 0.5, 1], [1, 1 + index * 0.02, 1 - index * 0.05]),
-      opacityValue: useTransform(scrollYProgress, [0, 0.3, 0.6, 1], [1, 0.8 - index * 0.1, 0.6 + index * 0.1, 0]),
-    }));
-  }, [images, scrollYProgress, speed]); 
+  // ✅ Transform Hooks must be at the top level, not inside a loop
+  const yTransforms = images.map((_, index) =>
+    useTransform(scrollYProgress, [0, 1], [0, 100 * speed * (1 + index * 0.15)])
+  );
+  const scaleTransforms = images.map((_, index) =>
+    useTransform(scrollYProgress, [0, 0.5, 1], [1, 1 + index * 0.02, 1 - index * 0.05])
+  );
+  const opacityTransforms = images.map((_, index) =>
+    useTransform(scrollYProgress, [0, 0.3, 0.6, 1], [1, 0.8 - index * 0.1, 0.6 + index * 0.1, 0])
+  );
 
   return (
     <div ref={containerRef} className={`relative ${className}`}>
@@ -44,9 +46,9 @@ const ParallaxImages = ({ images, className = "", speed = 0.5 }: ParallaxImagesP
               width: `${300 - index * 20}px`,
               height: `${200 - index * 10}px`,
               zIndex: images.length - index,
-              y: transforms[index].yValue,
-              scale: transforms[index].scaleValue,
-              opacity: transforms[index].opacityValue,
+              y: yTransforms[index], // ✅ Using stored transform values
+              scale: scaleTransforms[index],
+              opacity: opacityTransforms[index],
               rotate: index % 2 === 0 ? -5 : 5,
             }}
             initial={{ opacity: 0, y: 50 }}
