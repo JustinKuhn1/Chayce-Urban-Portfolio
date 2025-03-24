@@ -51,7 +51,7 @@ export default function Contact() {
             Hit Me Up
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            I'm lonely text me. Only white people
+            I'm lonely, text me.
           </p>
         </motion.div>
 
@@ -71,8 +71,8 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  <a href="mailto:kuhnj8313@gmail.com" className="hover:text-foreground transition-colors">
-                    chayce@example.com
+                  <a href="mailto:cmurban@icloud.com" className="hover:text-foreground transition-colors">
+                    cmurban@icloud.com
                   </a>
                 </CardDescription>
               </CardContent>
@@ -86,8 +86,8 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  <a href="tel:+14124179002" className="hover:text-foreground transition-colors">
-                    +1 (412) 699-8128
+                  <a href="tel:+14126998128" className="hover:text-foreground transition-colors">
+                    (412) 699-8128
                   </a>
                 </CardDescription>
               </CardContent>
