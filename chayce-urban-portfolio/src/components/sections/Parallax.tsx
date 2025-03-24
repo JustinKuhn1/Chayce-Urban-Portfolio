@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface ParallaxImagesProps {
@@ -17,33 +17,37 @@ const ParallaxImages = ({ images, className = '', speed = 0.5 }: ParallaxImagesP
     offset: ['start end', 'end start'],
   });
 
-  return (
-    <div ref={containerRef} className={`relative ${className}`}>
-      {images.map((src, index) => {
-        // Calculate different parallax speeds for each image
-        const yValue = useTransform(
+  // Precompute parallax values outside of the map function
+  const parallaxValues = useMemo(() => {
+    return images.map((_, index) => {
+      return {
+        yValue: useTransform(
           scrollYProgress,
           [0, 1],
           [0, 100 * speed * (1 + index * 0.15)]
-        );
-
-        // Calculate different scales for a layered effect
-        const scaleValue = useTransform(
+        ),
+        scaleValue: useTransform(
           scrollYProgress,
           [0, 0.5, 1],
           [1, 1 + index * 0.02, 1 - index * 0.05]
-        );
-
-        // Calculate different opacity transitions
-        const opacityValue = useTransform(
+        ),
+        opacityValue: useTransform(
           scrollYProgress,
           [0, 0.3, 0.6, 1],
           [1, 0.8 - index * 0.1, 0.6 + index * 0.1, 0]
-        );
+        )
+      };
+    });
+  }, [scrollYProgress, speed]);
 
+  return (
+    <div ref={containerRef} className={`relative ${className}`}>
+      {images.map((src, index) => {
         // Position each image at a different place
         const leftPosition = 20 + (index % 3) * 30;
         const topPosition = 10 + (index % 2) * 40;
+
+        const { yValue, scaleValue, opacityValue } = parallaxValues[index];
 
         return (
           <motion.div
