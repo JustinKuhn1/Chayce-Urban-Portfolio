@@ -63,7 +63,7 @@ export default function Footer() {
           transition={{ duration: 0.7, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p>Developed by Justin Kuhn with the help of Dylan Simmons.</p>
+          <p>Developed by Justin Kuhn in collaboration with Dylan Simmons.</p>
         </motion.div>
       </div>
     </footer>
