@@ -43,17 +43,7 @@ const ScrollDownIndicator = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1, duration: 1 }}
     >
-      <motion.div
-        className="flex flex-col items-center cursor-pointer"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-      >
-        <span className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Scroll Down</span>
-        <svg className="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
-      </motion.div>
+      
     </motion.div>
   );
 };
