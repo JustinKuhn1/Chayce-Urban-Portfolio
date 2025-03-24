@@ -80,3 +80,7 @@
 .hero-text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-blue-500 to-indigo-600;
 }
+
+html, body {
+  overflow-x: hidden;
+}
