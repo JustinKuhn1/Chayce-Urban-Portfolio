@@ -9,7 +9,7 @@ export default function Footer() {
 
   const socialLinks = [
     { icon: <Instagram className="h-5 w-5" />, href: "https://www.instagram.com/cmurban_06?igsh=MWtocTN6dTJ5aGVscA==", label: "Instagram" },
-    { icon: <Mail className="h-5 w-5" />, href: "mailto:kuhnj8313@gmail.com", label: "Email" },
+    { icon: <Mail className="h-5 w-5" />, href: "mailto:cmurban@icloud.com, label: "Email" },
   ];
 
   return (
@@ -63,7 +63,7 @@ export default function Footer() {
           transition={{ duration: 0.7, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p>Developed by Justin Kuhn in collaboration with Dylan Simmons.</p>
+          <p>Developed by Justin Kuhn.</p>
         </motion.div>
       </div>
     </footer>

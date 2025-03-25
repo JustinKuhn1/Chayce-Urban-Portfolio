@@ -6,7 +6,6 @@ import ScrollAnimatedProjects from "@/components/sections/ScrollAnimatedProjects
 import Skills from "@/components/sections/Skills";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
-import MouseTrailEffect from '@/components/sections/MouseTrailEffects';
 
 export default function Home() {
   return (

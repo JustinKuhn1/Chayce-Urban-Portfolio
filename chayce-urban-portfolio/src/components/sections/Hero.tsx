@@ -3,9 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
 
-// Sample image URLs removed from here
-
-// Removing FloatingImages component
 
 const AnimatedBackground = () => {
   return (

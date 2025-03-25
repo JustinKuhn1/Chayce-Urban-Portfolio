@@ -2,7 +2,6 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 
-// Sample project data - replace with your own
 const projects = [
   {
     id: 1,
