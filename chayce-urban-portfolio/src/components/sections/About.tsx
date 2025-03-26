@@ -5,6 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Collage from "@/components/sections/Collage";
+import RedBullCan from "./RedBullCan";
+import ChayceFight from "./ChayceFight";
 
 export default function About() {
   return (
@@ -34,13 +36,13 @@ export default function About() {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
               About Me
             </h2>
-
+            
             <p className="text-lg text-muted-foreground">
-              I’m a short little gremlin.
+              I'm a short little gremlin.
             </p>
 
             <p className="text-lg text-muted-foreground">
-              I'll steal ur girl, I bench 134lbs. I waste my time swinging at golf balls like a clueless wannabe and grunting in the gym, pretending I’m fit.
+              I'll steal ur girl, I bench 134lbs. I waste my time swinging at golf balls like a clueless wannabe and grunting in the gym, pretending I'm fit.
             </p>
 
             <div className="pt-4">
@@ -50,7 +52,13 @@ export default function About() {
             </div>
           </motion.div>
         </div>
-
+        
+        {/* Horizontal layout for RedBullCan and ChayceFight */}
+        <div className="flex justify-center items-center space-x-4 mt-8">
+          <RedBullCan />
+          <ChayceFight />
+        </div>
+        
         <div className="mt-12">
           <Collage />
         </div>
