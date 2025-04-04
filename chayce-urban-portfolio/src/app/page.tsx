@@ -6,19 +6,12 @@ import ScrollAnimatedProjects from "@/components/sections/ScrollAnimatedProjects
 import Skills from "@/components/sections/Skills";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
+import PasswordProtection from "@/components/sections/PasswordProtection";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <ScrollAnimatedProjects />
-        <Skills />
-        <Contact />
-      </main>
-      <Footer />
+      <PasswordProtection redirectPath={""}></PasswordProtection>
     </div>
   );
 }
