@@ -92,7 +92,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         <div className="flex justify-between mb-4">
           <button 
             onClick={handleAuth}
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg w-full"
+            className="bg-black hover:bg-gray-500 text-white py-2 px-4 rounded-lg w-full"
           >
             {isSignUp ? 'Sign Up' : 'Sign In'}
           </button>
@@ -104,7 +104,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               Already have an account?{' '}
               <span 
                 onClick={() => { setIsSignUp(false); setError(null); setSuccessMessage(null); }}
-                className="text-blue-500 hover:underline cursor-pointer"
+                className="text-black hover:underline cursor-pointer"
               >
                 Sign In
               </span>
@@ -114,7 +114,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               Don't have an account?{' '}
               <span 
                 onClick={() => { setIsSignUp(true); setError(null); setSuccessMessage(null); }}
-                className="text-blue-500 hover:underline cursor-pointer"
+                className="text-black hover:underline cursor-pointer"
               >
                 Sign Up
               </span>

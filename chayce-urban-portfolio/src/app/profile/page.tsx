@@ -8,6 +8,7 @@ import { Wallet, PieChart, TrendingUp, Clock, DollarSign, Briefcase } from 'luci
 import Navbar from "@/components/Navbar";
 import Footer from '@/components/Footer';
 import StockComponent from '@/components/sections/StockComponent';
+import AuthModal from '@/components/ui/AuthModal'; // Import the AuthModal component
 import styles from '@/styles/StockComponent.module.css';
 
 interface Economy {
@@ -41,6 +42,7 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [showAuthModal, setShowAuthModal] = useState(false); // State for showing the AuthModal
   const router = useRouter();
 
   // Fetch user and their economy data (or create one if it doesn't exist)
@@ -50,7 +52,8 @@ const ProfilePage = () => {
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         
         if (userError || !user) {
-          router.push('/auth');
+          setShowAuthModal(true); // Show the AuthModal instead of redirecting
+          setLoading(false);
           return;
         }
         
@@ -116,12 +119,13 @@ const ProfilePage = () => {
       if (event === 'SIGNED_OUT') {
         setUser(null);
         setEconomy(null);
-        router.push('/auth');
+        setInvestments([]);
+        setShowAuthModal(true); // Show the AuthModal on sign out
       }
     });
 
     return () => listener.subscription.unsubscribe();
-  }, [router]);
+  }, []);
 
   // Set up real-time subscription to the economy table
   useEffect(() => {
@@ -193,6 +197,8 @@ const ProfilePage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
+      {/* Show AuthModal if user is not logged in */}
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
       {/* Main content with proper spacing for fixed navbar */}
       <main className="flex-grow pt-24 pb-12">
         <div className="container mx-auto px-4">

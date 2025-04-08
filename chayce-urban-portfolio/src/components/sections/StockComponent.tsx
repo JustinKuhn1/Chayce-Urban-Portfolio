@@ -10,6 +10,7 @@ import {
   BarChart2,
   X,
   Check,
+  Info,
 } from 'lucide-react';
 import {
   LineChart,
@@ -21,16 +22,14 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import styles from '@/styles/StockComponent.module.css';
-
-interface Stock {
-  id: string;
-  symbol: string;
-  company_name: string;
-  current_price: number;
-  price_change: number;
-  created_at: string;
-}
+import { 
+  updateStockPrice, 
+  simulateMarketMovements, 
+  resetDailyValues,
+  fetchStockHistory,
+  formatDate,
+  Stock as StockType
+} from '@/lib/marketSimulation';
 
 interface UserStock {
   id: string;
@@ -39,7 +38,7 @@ interface UserStock {
   quantity: number;
   purchase_price: number;
   purchase_date: string;
-  stock: Stock;
+  stock: StockType;
 }
 
 interface StockHistoryData {
@@ -49,7 +48,7 @@ interface StockHistoryData {
 }
 
 const StockComponent = () => {
-  const [stocks, setStocks] = useState<Stock[]>([]);
+  const [stocks, setStocks] = useState<StockType[]>([]);
   const [userStocks, setUserStocks] = useState<UserStock[]>([]);
   const [userBalance, setUserBalance] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -57,13 +56,14 @@ const StockComponent = () => {
   const [filterType, setFilterType] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [showTooltip, setShowTooltip] = useState<string | null>(null);
 
   // Chart-related states
   const [showChart, setShowChart] = useState<boolean>(false);
-  const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
+  const [selectedStock, setSelectedStock] = useState<StockType | null>(null);
   const [stockHistory, setStockHistory] = useState<StockHistoryData[]>([]);
   const [loadingChart, setLoadingChart] = useState<boolean>(false);
-  const [timeframe, setTimeframe] = useState<string>('1M'); // Options: 1D, 1W, 1M, 3M, 1Y, 5Y
+  const [timeframe, setTimeframe] = useState<string>('1D'); // Options: 1D, 1W, 1M, 3M, 1Y, 5Y
   const [comparisonMode, setComparisonMode] = useState<boolean>(false);
   const [compareStocks, setCompareStocks] = useState<string[]>([]);
   const [comparisonData, setComparisonData] = useState<any[]>([]);
@@ -104,6 +104,23 @@ const StockComponent = () => {
 
     fetchData();
 
+    // Set up regular market movements
+    const marketInterval = setInterval(() => {
+      simulateMarketMovements();
+    }, 30000); // Simulate market movements every 30 seconds
+
+    // Set up daily reset if needed (at market open)
+    const checkForMarketOpen = () => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      // Reset at 9:30 AM
+      if (hours === 9 && minutes === 30) {
+        resetDailyValues();
+      }
+    };
+    const dailyCheckInterval = setInterval(checkForMarketOpen, 60000); // Check every minute
+
     // Real-time subscription for stock updates
     const stocksSubscription = supabase
       .channel('stocks_changes')
@@ -121,6 +138,8 @@ const StockComponent = () => {
       .subscribe();
 
     return () => {
+      clearInterval(marketInterval);
+      clearInterval(dailyCheckInterval);
       supabase.removeChannel(stocksSubscription);
     };
   }, []);
@@ -130,117 +149,85 @@ const StockComponent = () => {
   // -----------------------------
   useEffect(() => {
     if (!selectedStock) return;
-    const fetchStockHistory = async () => {
+    const loadHistoricalData = async () => {
       setLoadingChart(true);
       try {
-        const historyData = generateHistoricalData(selectedStock, timeframe);
-        setStockHistory(historyData);
+        const historyData = await fetchStockHistory(selectedStock.id, timeframe);
+        setStockHistory(historyData || []);
       } catch (error) {
-        console.error('Error fetching stock history:', error);
+        console.error('Error loading stock history:', error);
       } finally {
         setLoadingChart(false);
       }
     };
-    fetchStockHistory();
+    loadHistoricalData();
   }, [selectedStock, timeframe]);
 
   useEffect(() => {
     if (!comparisonMode || compareStocks.length === 0) return;
+    
     const fetchComparisonData = async () => {
       setLoadingChart(true);
       try {
-        const comparisonPoints = generateComparisonData(compareStocks, timeframe);
-        setComparisonData(comparisonPoints);
+        // Get list of stock IDs for the selected symbols
+        const stockIds = stocks
+          .filter(stock => compareStocks.includes(stock.symbol))
+          .map(stock => stock.id);
+        
+        // Fetch history for each stock ID
+        const historicalDataPromises = stockIds.map(id => 
+          fetchStockHistory(id, timeframe)
+        );
+        
+        const historicalDataSets = await Promise.all(historicalDataPromises);
+        
+        // Convert multiple datasets into a single comparison dataset
+        const mergedData: any[] = [];
+        const datepointsMap = new Map();
+        
+        // First, gather all unique dates
+        historicalDataSets.forEach((dataset, index) => {
+          const stockSymbol = compareStocks[index];
+          dataset?.forEach(point => {
+            if (!datepointsMap.has(point.date)) {
+              datepointsMap.set(point.date, { date: point.date });
+            }
+            datepointsMap.get(point.date)[stockSymbol] = point.price;
+          });
+        });
+        
+        // Convert map to array
+        datepointsMap.forEach(datapoint => {
+          mergedData.push(datapoint);
+        });
+        
+        // Sort by date
+        mergedData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        
+        setComparisonData(mergedData);
       } catch (error) {
         console.error('Error fetching comparison data:', error);
       } finally {
         setLoadingChart(false);
       }
     };
+    
     fetchComparisonData();
-  }, [comparisonMode, compareStocks, timeframe]);
-
-  const generateHistoricalData = (stock: Stock, timeframe: string): StockHistoryData[] => {
-    const data: StockHistoryData[] = [];
-    const now = new Date();
-    let dataPoints = 30;
-    if (timeframe === '1D') dataPoints = 24;
-    else if (timeframe === '1W') dataPoints = 7;
-    else if (timeframe === '3M') dataPoints = 90;
-    else if (timeframe === '1Y') dataPoints = 12;
-    else if (timeframe === '5Y') dataPoints = 20;
-
-    const currentPrice = stock.current_price;
-    const changeMultiplier = 1 + stock.price_change / 100;
-    const startingPrice = currentPrice / changeMultiplier;
-
-    for (let i = 0; i < dataPoints; i++) {
-      const date = new Date(now);
-      if (timeframe === '1D') date.setHours(now.getHours() - (dataPoints - i));
-      else if (timeframe === '5Y') date.setMonth(now.getMonth() - (dataPoints - i) * 3);
-      else if (timeframe === '1Y') date.setMonth(now.getMonth() - (dataPoints - i));
-      else date.setDate(now.getDate() - (dataPoints - i));
-
-      const progress = i / (dataPoints - 1);
-      const trendPrice = startingPrice + (currentPrice - startingPrice) * progress;
-      const price = trendPrice * (1 + (Math.random() - 0.5) * 0.05);
-      data.push({
-        date: formatDate(date, timeframe),
-        price: parseFloat(price.toFixed(2)),
-        volume: Math.floor(100000 + Math.random() * 900000)
-      });
-    }
-    return data;
-  };
-
-  const generateComparisonData = (stockSymbols: string[], timeframe: string) => {
-    const data: any[] = [];
-    const dataPoints =
-      timeframe === '1D' ? 24 :
-      timeframe === '1W' ? 7 :
-      timeframe === '1M' ? 30 :
-      timeframe === '3M' ? 90 :
-      timeframe === '1Y' ? 12 : 20;
-    const stocksToCompare = stocks.filter(stock => stockSymbols.includes(stock.symbol));
-    const now = new Date();
-
-    for (let i = 0; i < dataPoints; i++) {
-      const date = new Date(now);
-      if (timeframe === '1D') date.setHours(now.getHours() - (dataPoints - i));
-      else if (timeframe === '5Y') date.setMonth(now.getMonth() - (dataPoints - i) * 3);
-      else if (timeframe === '1Y') date.setMonth(now.getMonth() - (dataPoints - i));
-      else date.setDate(now.getDate() - (dataPoints - i));
-
-      const entry: any = { date: formatDate(date, timeframe) };
-      stocksToCompare.forEach(stock => {
-        const currentPrice = stock.current_price;
-        const changeMultiplier = 1 + stock.price_change / 100;
-        const startingPrice = currentPrice / changeMultiplier;
-        const progress = i / (dataPoints - 1);
-        const trendPrice = startingPrice + (currentPrice - startingPrice) * progress;
-        const price = trendPrice * (1 + (Math.random() - 0.5) * 0.05);
-        entry[stock.symbol] = parseFloat(price.toFixed(2));
-      });
-      data.push(entry);
-    }
-    return data;
-  };
-
-  const formatDate = (date: Date, timeframe: string): string => {
-    if (timeframe === '1D')
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    else if (timeframe === '5Y' || timeframe === '1Y')
-      return date.toLocaleDateString([], { month: 'short', year: 'numeric' });
-    else return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-  };
+  }, [comparisonMode, compareStocks, timeframe, stocks]);
 
   // -----------------------------
   // UI Handlers
   // -----------------------------
-  const handleViewChart = (stock: Stock) => {
-    setSelectedStock(stock);
+  const handleViewChart = async (stock: StockType) => {
+    // Get the most up-to-date stock data first
+    const { data: freshStock } = await supabase
+      .from('stocks')
+      .select('*')
+      .eq('id', stock.id)
+      .single();
+      
+    setSelectedStock(freshStock || stock);
     setShowChart(true);
-    // Reset comparison selections in single-stock view
     setComparisonMode(false);
     setCompareStocks([]);
   };
@@ -268,38 +255,58 @@ const StockComponent = () => {
     }
   };
 
-  const handlePurchase = async (stock: Stock) => {
+  const handlePurchase = async (stock: StockType) => {
     try {
       const quantity = purchaseAmount[stock.id] || 0;
       if (quantity <= 0) return;
       const totalCost = stock.current_price * quantity;
+      
+      // Check if there are enough available shares
+      if (stock.available_shares && quantity > stock.available_shares) {
+        alert(`Only ${stock.available_shares} shares available for ${stock.symbol}`);
+        return;
+      }
+      
       if (totalCost > userBalance) {
         alert('Insufficient funds for this purchase');
         return;
       }
+      
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
+      
+      // Update user balance
       const { error: balanceError } = await supabase
         .from('economy')
         .update({ balance: userBalance - totalCost })
         .eq('user_id', user.id);
+      
       if (balanceError) throw balanceError;
+      
+      // Check if user already owns this stock
       const { data: existingStock } = await supabase
         .from('user_stocks')
         .select('*')
         .eq('user_id', user.id)
         .eq('stock_id', stock.id)
         .single();
+      
       if (existingStock) {
         const newQuantity = existingStock.quantity + quantity;
         const newAvgPrice =
           ((existingStock.purchase_price * existingStock.quantity) +
             (stock.current_price * quantity)) /
           newQuantity;
+        
         const { error: updateError } = await supabase
           .from('user_stocks')
-          .update({ quantity: newQuantity, purchase_price: newAvgPrice })
+          .update({ 
+            quantity: newQuantity, 
+            purchase_price: newAvgPrice,
+            purchase_date: new Date().toISOString()
+          })
           .eq('id', existingStock.id);
+        
         if (updateError) throw updateError;
       } else {
         const { error: insertError } = await supabase
@@ -311,8 +318,20 @@ const StockComponent = () => {
             purchase_price: stock.current_price,
             purchase_date: new Date().toISOString(),
           });
+        
         if (insertError) throw insertError;
       }
+      
+      // Update the stock price based on this transaction
+      const updatedStock = await updateStockPrice(stock.id, quantity, true);
+      
+      // If we're currently viewing a chart of this stock, update it
+if (updatedStock && selectedStock?.id === stock.id) {
+  setSelectedStock(updatedStock);
+  // Force chart data refresh
+  setTimeframe(timeframe);  
+}
+      
       setUserBalance(prev => prev - totalCost);
       setPurchaseAmount(prev => ({ ...prev, [stock.id]: 0 }));
       refreshPortfolio(user.id);
@@ -327,25 +346,43 @@ const StockComponent = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
+      
       const currentPrice = userStock.stock.current_price;
       const saleProceeds = currentPrice * userStock.quantity;
+      
       const { error: balanceError } = await supabase
         .from('economy')
         .update({ balance: userBalance + saleProceeds })
         .eq('user_id', user.id);
+      
       if (balanceError) throw balanceError;
+      
       const { error: deleteError } = await supabase
         .from('user_stocks')
         .delete()
         .eq('id', userStock.id);
+      
       if (deleteError) throw deleteError;
+      
+      // Update the stock price based on this sale transaction
+      const updatedStock = await updateStockPrice(userStock.stock.id, userStock.quantity, false);
+      
+      // If we're currently viewing a chart of this stock, update it
+if (updatedStock && selectedStock?.id === userStock.stock.id) {
+  setSelectedStock(updatedStock);
+  // Force chart data refresh
+  setTimeframe(timeframe);
+}
+      
       setUserBalance(prev => prev + saleProceeds);
       setUserStocks(prev => prev.filter(stock => stock.id !== userStock.id));
+      
       const profitLoss = (currentPrice - userStock.purchase_price) * userStock.quantity;
       const profitLossText =
         profitLoss >= 0
           ? `profit of $${profitLoss.toFixed(2)}`
           : `loss of $${Math.abs(profitLoss).toFixed(2)}`;
+      
       alert(`Successfully sold ${userStock.quantity} shares of ${userStock.stock.company_name} for $${saleProceeds.toFixed(2)} with a ${profitLossText}`);
     } catch (error) {
       console.error('Error selling stock:', error);

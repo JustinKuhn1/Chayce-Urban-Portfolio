@@ -7,6 +7,8 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 import Navbar from "@/components/Navbar";
 import Footer from '@/components/Footer';
 import StockComponent from '@/components/sections/StockComponent';
+import AuthModal from '@/components/ui/AuthModal';
+
 interface Economy {
   id: string;
   user_id: string;
@@ -26,6 +28,7 @@ const ProfilePage = () => {
   const [economy, setEconomy] = useState<Economy | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false); // State for showing the AuthModal
   const router = useRouter();
 
   // Fetch user and their economy data (or create one if it doesn't exist)
@@ -35,7 +38,8 @@ const ProfilePage = () => {
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         
         if (userError || !user) {
-          router.push('/auth');
+          setShowAuthModal(true); // Show the AuthModal instead of redirecting
+          setLoading(false);
           return;
         }
         
@@ -89,7 +93,7 @@ const ProfilePage = () => {
       if (event === 'SIGNED_OUT') {
         setUser(null);
         setEconomy(null);
-        router.push('/auth');
+        setShowAuthModal(true); // Show the AuthModal on sign out
       }
     });
 
@@ -133,6 +137,8 @@ const ProfilePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      {/* Show AuthModal if user is not logged in */}
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
       {/* Main content with proper spacing for fixed navbar */}
       <main className="flex-grow pt-24 pb-12">
         <StockComponent />
