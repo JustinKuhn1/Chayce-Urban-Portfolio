@@ -11,7 +11,15 @@ import PasswordProtection from "@/components/sections/PasswordProtection";
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <PasswordProtection redirectPath={""}></PasswordProtection>
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <ScrollAnimatedProjects />
+        <Skills />
+        <Contact />
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -23,7 +23,7 @@ export default function Footer() {
           viewport={{ once: true }}
         >
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold">Chayce Urban</h3>
+            <h3 className="text-xl font-bold">CHAYCE</h3>
             <p className="text-sm text-muted-foreground mt-2">
               Living life one questionable decision at a time.
             </p>
@@ -63,7 +63,7 @@ export default function Footer() {
           transition={{ duration: 0.7, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p>Developed by Justin Kuhn in collaboration with Dylan Simmons.</p>
+          <p>Developed by Justin Kuhn | Design planning in collaboration with Dylan Simmons</p>
         </motion.div>
       </div>
     </footer>
