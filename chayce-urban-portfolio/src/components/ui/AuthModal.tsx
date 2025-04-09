@@ -17,36 +17,71 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [error, setError] = useState<string | null>(null);
   const [isSignUp, setIsSignUp] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
     setError(null);
     setSuccessMessage(null);
+    setLoading(true);
 
-    if (isSignUp) {
-      if (!name.trim()) {
-        setError("Name is required for signing up.");
-        return;
-      }
+    try {
+      if (isSignUp) {
+        if (!name.trim()) {
+          setError("Name is required for signing up.");
+          setLoading(false);
+          return;
+        }
 
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name },
-        },
-      });
+        // Sign up the user with name in user_metadata
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { name }, // Store name in user metadata
+          },
+        });
 
-      if (error) setError(error.message);
-      else {
+        if (signUpError) {
+          setError(signUpError.message);
+          return;
+        }
+
+        // If sign up is successful, create initial economy record
+        if (signUpData.user) {
+          // Create initial economy record with default values and store display name
+          const { error: economyError } = await supabase
+            .from('economy')
+            .insert([
+              {
+                user_id: signUpData.user.id,
+                balance: 10000,
+                assets: 0,
+                liabilities: 0,
+                is_verified: false,
+                display_name: name // pass the input name from state
+              }
+            ]);
+
+        }
+
         setSuccessMessage(
           "Confirmation email sent! Please check your inbox to verify your account."
         );
-      }
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      } else {
+        // Sign in
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (error) setError(error.message);
-      else onClose();
+        if (signInError) {
+          setError(signInError.message);
+        } else {
+          // Close modal on successful sign in
+          onClose();
+        }
+      }
+    } catch (error: any) {
+      setError(error.message || 'An unexpected error occurred');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,9 +127,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         <div className="flex justify-between mb-4">
           <button 
             onClick={handleAuth}
-            className="bg-black hover:bg-gray-500 text-white py-2 px-4 rounded-lg w-full"
+            disabled={loading}
+            className={`bg-black hover:bg-gray-500 text-white py-2 px-4 rounded-lg w-full 
+              ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {isSignUp ? 'Sign Up' : 'Sign In'}
+            {loading ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Sign In')}
           </button>
         </div>
 

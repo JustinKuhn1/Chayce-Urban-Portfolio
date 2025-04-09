@@ -9,12 +9,13 @@ import { supabase } from '@/lib/supabaseClient';
 import AuthModal from './ui/AuthModal';
 
 const navItems = [
-  { name: 'Home', href: 'https://chayceurban.com' },
+  { name: 'Home', href: 'https://www.chayceurban.com' },
   { name: 'Economy', href: '/economy', isInternal: true },
-  { name: 'About', href: '#about' },
-  { name: 'Notable Moments', href: '#projects' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Leaderboard', href: '/leaderboard', isInternal: true },
+  { name: 'About', href: 'https://www.chayceurban.com#about' },
+  { name: 'Notable Moments', href: 'https://www.chayceurban.com#projects' },
+  { name: 'Skills', href: 'https://www.chayceurban.com#skills' },
+  { name: 'Contact', href: 'https://www.chayceurban.com#contact' },
 ];
 
 const Navbar = () => {

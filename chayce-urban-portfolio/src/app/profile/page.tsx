@@ -57,7 +57,23 @@ const ProfilePage = () => {
           return;
         }
         
+        // Get the user's profile including verification status
+        const { data: profileData, error: profileError } = await supabase
+        .from('economy')  // or whatever table contains your verification field
+        .select('is_verified')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (profileData) {
+        console.log('Fetched is_verified:', profileData.is_verified); // Debugging
+        setUser({
+          ...user,
+          is_verified: profileData.is_verified,
+        });
+      } else {
+        console.log('Profile data not found or is_verified is missing');
         setUser(user);
+      }
         
         // Fetch the economy record for the current user
         let { data, error } = await supabase
@@ -208,8 +224,15 @@ const ProfilePage = () => {
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Financial Dashboard</h1>
                 {user && (
-                  <p className="text-gray-600 dark:text-gray-300 mt-1">
-                    Welcome back, <span className="font-semibold">{user.user_metadata?.name || user.email || 'User'}</span>
+                  <p className="text-gray-600 dark:text-gray-300 mt-1 flex items-center">
+                    Welcome back, <span className="font-semibold mx-1">{user.user_metadata?.name || user.email || 'User'}</span>
+                    {user?.is_verified && (
+                      <span className="inline-flex items-center ml-0.5 text-blue-500" title="Verified Account">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" className="w-5 h-5">
+                          <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
+                        </svg>
+                      </span>
+                    )}
                   </p>
                 )}
               </div>
