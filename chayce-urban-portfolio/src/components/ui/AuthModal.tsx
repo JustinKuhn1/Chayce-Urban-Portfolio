@@ -25,22 +25,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     setLoading(true);
 
     try {
-      if (isSignUp) {
-        if (!name.trim()) {
-          setError("Name is required for signing up.");
-          setLoading(false);
-          return;
-        }
+      // In the handleAuth function in AuthModal.tsx
+if (isSignUp) {
+  if (!name.trim()) {
+    setError("Name is required for signing up.");
+    setLoading(false);
+    return;
+  }
 
-        // Sign up the user with name in user_metadata
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { name }, // Store name in user metadata
-          },
-        });
-
+  // Sign up the user with name in user_metadata
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { 
+        name: name,
+        display_name: name // Add this to ensure it's in metadata
+      },
+    },
+  });
         if (signUpError) {
           setError(signUpError.message);
           return;

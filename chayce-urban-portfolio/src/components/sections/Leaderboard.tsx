@@ -25,6 +25,7 @@ const Leaderboard = () => {
     const fetchLeaderboardData = async () => {
       try {
         const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
         if (userError) {
           console.error('Error getting current user:', userError);
           setError('Failed to retrieve current user.');
@@ -45,46 +46,17 @@ const Leaderboard = () => {
           return;
         }
 
-        const userNamesMap: Record<string, string> = {};
-        
         if (economyData && economyData.length > 0) {
-          try {
-            const { data: authUsersData, error: authUsersError } = await supabase.auth.admin.listUsers();
-            
-            if (!authUsersError && authUsersData?.users) {
-              authUsersData.users.forEach(authUser => {
-                const name = authUser.user_metadata?.name;
-                if (name) {
-                  userNamesMap[authUser.id] = name;
-                }
-              });
-            }
-          } catch (authError) {
-            console.log('Could not access auth users directly:', authError);
-          }
-          
-          for (const item of economyData) {
-            if (!userNamesMap[item.user_id]) {
-              try {
-                const { data: userData, error: userDataError } = await supabase
-                  .from('economy')
-                  .select('name')
-                  .eq('user_id', item.user_id)
-                  .single();
-                  
-
-                if (!userDataError && userData?.name) {
-                  userNamesMap[item.user_id] = userData.name;
-                }
-              } catch (userError) {
-                console.log(`Could not get user data for ${item.user_id}:`, userError);
-              }
-            }
-          }
-          
           const processedData = economyData.map((item: any) => {
             const netWorth = (item.balance || 0) + (item.assets || 0) - (item.liabilities || 0);
-            const displayName = item.display_name || `User ${item.user_id.slice(0, 5)}...`;
+            
+            // Try to get display name from multiple sources with fallbacks
+            let displayName = String(item.display_name || '').trim();
+            
+            // If no display name found, create a readable user ID snippet
+            if (!displayName || displayName.trim() === '') {
+              displayName = `User ${item.user_id.slice(0, 5)}...`;
+            }
               
             return {
               user_id: item.user_id,
@@ -178,9 +150,9 @@ const Leaderboard = () => {
                       {user.rank > 3 && <span>{user.rank}</span>}
                     </td>
                     <td className="py-4 px-4 font-medium">
-                      {user.display_name}
-                      {currentUserId === user.user_id && <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 py-1 px-2 rounded-full">You</span>}
-                    </td>
+  {user.display_name} 
+  {currentUserId === user.user_id && <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 py-1 px-2 rounded-full">You</span>}
+</td>
                     <td className="py-4 px-4">
                       {user.is_verified ? 
                         <div className="flex items-center text-green-600 dark:text-green-400">
