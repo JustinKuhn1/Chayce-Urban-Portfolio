@@ -13,7 +13,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-muted/20 py-12">
+    <footer className="bg-muted/20 py-12 backdrop-blur-sm">
       <div className="container">
         <motion.div
           className="flex flex-col md:flex-row justify-between items-center gap-8"
@@ -25,7 +25,7 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold">CHAYCE</h3>
             <p className="text-sm text-muted-foreground mt-2">
-              Living life one questionable decision at a time.
+              Building innovative solutions with a touch of humor.
             </p>
             <p className="text-sm text-muted-foreground mt-1">
               &copy; {currentYear} | All rights reserved
@@ -63,7 +63,7 @@ export default function Footer() {
           transition={{ duration: 0.7, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p>Developed by Justin Kuhn | Design planning in collaboration with Dylan Simmons</p>
+          <p>Developed by Justin Kuhn</p>
         </motion.div>
       </div>
     </footer>
