@@ -10,7 +10,14 @@ import ChayceFight from "./ChayceFight";
 
 export default function About() {
   return (
-    <section id="about" className="py-16 md:py-24 bg-muted/50">
+    <motion.section
+      id="about"
+      className="py-16 md:py-24 bg-muted/50"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="container">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <motion.div
@@ -54,15 +61,18 @@ export default function About() {
         </div>
         
         {/* Horizontal layout for RedBullCan and ChayceFight */}
-        <div className="flex justify-center items-center space-x-4 mt-8">
+        <motion.div
+          className="flex justify-center items-center space-x-4 mt-8"
+          whileHover={{ scale: 1.05 }}
+        >
           <RedBullCan />
           <ChayceFight />
-        </div>
+        </motion.div>
         
         <div className="mt-12">
           <Collage />
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -3,7 +3,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { supabase } from '@/lib/supabaseClient';
 import AuthModal from './ui/AuthModal';
@@ -142,10 +142,12 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Navigation */}
+        <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
             className="md:hidden py-4 absolute w-full bg-gradient-to-r from-gray-800 via-gray-900 to-black shadow-lg"
           >
@@ -194,6 +196,7 @@ const Navbar = () => {
             </div>
           </motion.div>
         )}
+        </AnimatePresence>
       </header>
 
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}

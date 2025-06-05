@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 
 const AnimatedBackground = () => {
@@ -27,6 +28,12 @@ const AnimatedBackground = () => {
         <div className="absolute w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob top-0 -left-4"></div>
         <div className="absolute w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000 top-0 -right-4"></div>
         <div className="absolute w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000 bottom-0 left-20"></div>
+        <motion.div
+          className="absolute w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-60"
+          style={{ top: "40%", left: "40%" }}
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        />
       </div>
     </div>
   );
@@ -36,11 +43,11 @@ const ScrollDownIndicator = () => {
   return (
     <motion.div
       className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1, duration: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, y: [0, 10, 0] }}
+      transition={{ delay: 1, duration: 2, repeat: Infinity }}
     >
-      
+      <ChevronDownIcon className="w-8 h-8 text-gray-500 dark:text-gray-400" />
     </motion.div>
   );
 };
@@ -48,7 +55,6 @@ const ScrollDownIndicator = () => {
 const Hero = () => {
   const ref = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -66,7 +72,6 @@ const Hero = () => {
         opacity: 1,
         transition: { duration: 0.8, ease: "easeOut" }
       });
-      setIsLoaded(true);
     };
     sequence();
   }, [controls]);
