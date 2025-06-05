@@ -64,13 +64,14 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed w-full z-50 transition-all duration-300 shadow-md 
-          ${scrolled ? 'py-2' : 'py-4'} 
-          bg-gradient-to-r from-gray-800 via-gray-900 to-black 
-          text-gray-100
+        className={`fixed top-2 sm:top-4 left-1/2 -translate-x-1/2
+          w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 max-w-5xl
+          z-50 transition-all duration-300 shadow-lg
+          ${scrolled ? 'py-2' : 'py-4'}
+          bg-gray-900/80 backdrop-blur-md text-gray-100 rounded-full
         `}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -149,7 +150,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden py-4 absolute w-full bg-gradient-to-r from-gray-800 via-gray-900 to-black shadow-lg"
+            className="md:hidden absolute left-0 top-full mt-2 w-full py-4 bg-gray-900/80 backdrop-blur-md rounded-b-full shadow-lg"
           >
             <div className="space-y-2 px-4">
               {navItems.map((item) => (
