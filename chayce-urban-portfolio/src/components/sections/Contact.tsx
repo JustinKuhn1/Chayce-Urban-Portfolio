@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
+const MotionButton = motion(Button);
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -175,10 +177,12 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <Button
+                  <MotionButton
                     type="submit"
                     className="w-full transition-transform hover:scale-105 duration-200"
                     disabled={isSubmitting}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {isSubmitting ? (
                       "Sending..."
@@ -187,7 +191,7 @@ export default function Contact() {
                         <Send className="mr-2 h-4 w-4" /> Send Message
                       </>
                     )}
-                  </Button>
+                  </MotionButton>
 
                   {submitSuccess && (
                     <motion.p

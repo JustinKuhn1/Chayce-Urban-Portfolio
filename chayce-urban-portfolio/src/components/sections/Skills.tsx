@@ -91,7 +91,7 @@ export default function Skills() {
           viewport={{ once: true }}
         >
           {skills.map((skill, index) => (
-            <motion.div key={index} variants={item}>
+            <motion.div key={index} variants={item} whileHover={{ scale: 1.05, rotate: 1 }}>
               <Card className="transition-all hover:shadow-md hover:-translate-y-1 duration-300 h-full">
                 <CardHeader className="pb-2">
                   <div className="mb-4">{skill.icon}</div>

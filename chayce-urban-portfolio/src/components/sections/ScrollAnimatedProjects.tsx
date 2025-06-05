@@ -67,6 +67,8 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0], index: n
       variants={cardVariants}
       initial="hidden"
       animate={controls}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 200 }}
       className={`relative flex flex-col md:flex-row items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl mb-16 overflow-hidden ${
         isEven ? "md:flex-row" : "md:flex-row-reverse"
       }`}
@@ -80,6 +82,12 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0], index: n
           src={project.image}
           alt={project.title}
           className="w-full h-full object-cover rounded-lg shadow-lg"
+        />
+        <motion.div
+          className="absolute inset-0 rounded-lg bg-black/40"
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         />
       </motion.div>
 
