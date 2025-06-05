@@ -45,16 +45,16 @@ export default function About() {
             </h2>
             
             <p className="text-lg text-muted-foreground">
-              I'm a short little gremlin.
+              I'm a passionate learner with a love for technology and sports.
             </p>
 
             <p className="text-lg text-muted-foreground">
-              I'll steal ur girl, I bench 134lbs. I waste my time swinging at golf balls like a clueless wannabe and grunting in the gym, pretending I'm fit.
+              When I'm not coding, you'll find me on the golf course or hitting the gym.
             </p>
 
             <div className="pt-4">
               <Button asChild variant="outline" className="transition-transform hover:scale-105 duration-300">
-                <Link href="#skills">Check Out My Qualities</Link>
+                <Link href="#skills">Explore My Skills</Link>
               </Button>
             </div>
           </motion.div>

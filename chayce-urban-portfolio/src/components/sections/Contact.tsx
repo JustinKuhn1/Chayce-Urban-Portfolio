@@ -49,11 +49,11 @@ export default function Contact() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-bold text-[#7692ad]">
-            Hit Me Up
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
+            Get in Touch
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            I'm lonely, text me.
+            Feel free to reach out for collaborations or just a friendly chat.
           </p>
         </motion.div>
 
@@ -179,7 +179,7 @@ export default function Contact() {
 
                   <MotionButton
                     type="submit"
-                    className="w-full transition-transform hover:scale-105 duration-200"
+                    className="w-full bg-primary text-white transition-transform hover:scale-105 duration-200"
                     disabled={isSubmitting}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -200,7 +200,7 @@ export default function Contact() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      Message sent. I'll get back to you when I'm done golfing.
+                      Message sent! I'll get back to you soon.
                     </motion.p>
                   )}
                 </form>

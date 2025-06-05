@@ -91,21 +91,21 @@ const Hero = () => {
           animate={controls}
         >
           <motion.h1
-            className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-gray"
+            className="text-5xl md:text-7xl font-extrabold mb-6 hero-text-gradient"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            Hi, I'm Chayce Urban
+            Chayce Urban
           </motion.h1>
 
           <motion.p
-            className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
           >
-            A unique individual with distinct qualities you won't find anywhere else.
+            Aspiring software engineer and golfer creating cool projects.
           </motion.p>
 
           <motion.div
@@ -116,11 +116,11 @@ const Hero = () => {
           >
             <motion.a
               href="#projects"
-              className="px-8 py-3 bg-gradient-to-r from-[#7692ad] to-[#688eb3] text-white font-medium rounded-full transition-transform hover:scale-105 shadow-lg"
+              className="px-8 py-3 bg-gradient-to-r from-primary to-blue-600 text-white font-medium rounded-full transition-transform hover:scale-105 shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              View Notable Moments
+              See My Work
             </motion.a>
 
             <motion.a
@@ -129,7 +129,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Contact Me
+              Get in Touch
             </motion.a>
           </motion.div>
         </motion.div>

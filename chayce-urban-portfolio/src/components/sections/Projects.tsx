@@ -67,10 +67,10 @@ export default function Projects() {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Notable Moments
+            Projects
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            A glimpse into some of my memorable experiences.
+            A selection of my recent work and hobbies.
           </p>
         </motion.div>
 
@@ -83,7 +83,7 @@ export default function Projects() {
         >
           {projects.map((project, index) => (
             <motion.div key={index} variants={item}>
-              <Card className="overflow-hidden flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-2 duration-300">
+              <Card className="overflow-hidden flex flex-col h-full bg-background/80 backdrop-blur-lg border border-border transition-all hover:shadow-lg hover:-translate-y-2 duration-300">
                 <div className="relative h-48 w-full overflow-hidden">
                   <Image
                     src={project.imageSrc}
@@ -91,7 +91,7 @@ export default function Projects() {
                     layout="fill"
                     objectFit="cover"
                   />
-                  <div className="absolute inset-0 bg-primary/10 flex items-center justify-center group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/20 flex items-center justify-center group">
                     
                   </div>
                 </div>
@@ -99,7 +99,7 @@ export default function Projects() {
                   <CardTitle>{project.title}</CardTitle>
                   <CardDescription className="flex flex-wrap gap-2 pt-2">
                     {project.tags.map((tag) => (
-                      <span key={tag} className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors duration-200 hover:bg-primary/10">
+                      <span key={tag} className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors duration-200 hover:bg-primary/20">
                         {tag}
                       </span>
                     ))}
